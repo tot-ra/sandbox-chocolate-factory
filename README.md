@@ -1,6 +1,25 @@
 # chocolate-factory-sandbox
 Sandbox code that implements defined [requirements](docs/requirements.pdf). Main source code located in `src/Machine.ts`
 
+## Usage (docker)
+```bash
+docker compose up
+```
+
+## Usage (native)
+```bash
+nvm use
+npm i
+npm run build
+node out/main.js
+```
+
+## Unit testing
+```bash
+npm run test:coverage
+```
+
+
 ## Class diagram
 
 ```mermaid
@@ -27,25 +46,6 @@ classDiagram
         + addCacao(amount: number): number
     }
 ```
-
-## Usage (docker)
-```bash
-docker compose up
-```
-
-## Usage (native)
-```bash
-nvm use
-npm i
-npm run build
-node out/main.js
-```
-
-## Unit testing
-```bash
-npm run test:coverage
-```
-
 
 ## Unclear / Improvement areas
 1. Current solution follows the requirement of *example expected output* and not literal requirements, as there is a conflict between those. Specifically, requirements state :
