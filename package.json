@@ -5,7 +5,7 @@
   "main": "out/main.js",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --config test/jest.config.js"
   },
   "repository": {
     "type": "git",

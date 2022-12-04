@@ -43,7 +43,7 @@ export default class Machine {
 
   constructor() {}
 
-  private hasBuckets(){
+  private hasBuckets() {
     return this.buckets.length > 0;
   }
 
@@ -55,8 +55,11 @@ export default class Machine {
     }
   }
 
-  swapActiveBuckets(){
-    if (this.buckets.length > 1 && this.buckets[1].capacity <= this.buckets[0].capacity) {
+  swapActiveBuckets() {
+    if (
+      this.buckets.length > 1 &&
+      this.buckets[1].capacity <= this.buckets[0].capacity
+    ) {
       const tmp = this.buckets[1];
       this.buckets[1] = this.buckets[0];
       this.buckets[0] = tmp;
@@ -90,16 +93,19 @@ export default class Machine {
   }
 
   async load(buckets: any, onBucketReady: (v: string) => void) {
-    return new Promise((resolve: any) => {
+    return new Promise((resolve: any, reject: any) => {
+      try {
+        buckets.forEach((v: any) => {
+          this.buckets.push(new Bucket(v.capacity, v.milk, v.cacao));
+        });
+      } catch (e) {
+        reject(e);
+      }
 
-      buckets.forEach((v: any) => {
-        this.buckets.push(new Bucket(v.capacity, v.milk, v.cacao));
-      });
-  
       this.onBucketReady = (bucket: Bucket) => {
         onBucketReady("Bucket has been filled, " + bucket.toString());
 
-        if(!this.hasBuckets()){
+        if (!this.hasBuckets()) {
           resolve();
         }
       };

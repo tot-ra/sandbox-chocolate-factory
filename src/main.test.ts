@@ -1,4 +1,4 @@
-import Machine from '../src/Machine';
+import Machine from './Machine';
 
 it('should return sequence provided in pdf requirements', async()=>{
     const buckets = [
@@ -47,11 +47,10 @@ it('should return sequence provided in pdf requirements', async()=>{
       const job = setInterval(() => {
         machine.addMilk(Math.random() * 100);
         machine.addCacao(Math.random() * 100);
-      }, Math.random() * 100);
+      }, Math.random() * 1); // run as fast as possible to speed up unit tests
     
       let result: string = '';
       const onBucketReady = (line: string)=>{
-        console.log(line);
         result = result + line + "\n";
       };
 
