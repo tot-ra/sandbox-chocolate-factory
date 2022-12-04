@@ -16,7 +16,6 @@ class Bucket {
   }
 
   addMilk(amount: number): number {
-    //console.log('Adding milk'+this.capacity);
     const availableCapacity = this.capacity * (1 - CHOCOLATE_RATIO) - this.milk;
     if (amount <= availableCapacity) {
       this.milk += amount;
@@ -44,10 +43,15 @@ export default class Machine {
 
   constructor() {}
 
+  private hasBuckets(){
+    return this.buckets.length > 0;
+  }
+
   private checkBucketFills() {
-    if (this.buckets.length > 0 && this.buckets[0].isFull()) {
-      this.onBucketReady(this.buckets[0]);
+    if (this.hasBuckets() && this.buckets[0].isFull()) {
+      const removedBucket = this.buckets[0];
       this.buckets.shift();
+      this.onBucketReady(removedBucket);
     }
   }
 
@@ -65,7 +69,7 @@ export default class Machine {
     this.swapActiveBuckets();
     const overflow = this.buckets[0].addMilk(amount);
     if (overflow > 0) {
-      this.buckets[1].addMilk(amount);
+      this.buckets[1].addMilk(overflow);
     }
 
     this.checkBucketFills();
@@ -86,16 +90,19 @@ export default class Machine {
   }
 
   async load(buckets: any, onBucketReady: (v: string) => void) {
-    buckets.forEach((v: any) => {
-      this.buckets.push(new Bucket(v.capacity, v.milk, v.cacao));
-    });
-
-    this.onBucketReady = (bucket: Bucket) => {
-      onBucketReady("Bucket has been filled, " + bucket.toString());
-    };
-
     return new Promise((resolve: any) => {
-      setTimeout(resolve, 10000);
+
+      buckets.forEach((v: any) => {
+        this.buckets.push(new Bucket(v.capacity, v.milk, v.cacao));
+      });
+  
+      this.onBucketReady = (bucket: Bucket) => {
+        onBucketReady("Bucket has been filled, " + bucket.toString());
+
+        if(!this.hasBuckets()){
+          resolve();
+        }
+      };
     });
   }
 }
