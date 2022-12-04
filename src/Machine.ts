@@ -15,6 +15,7 @@ class Bucket {
     return `capacity: ${this.capacity} milk ${this.milk} cacao ${this.cacao}`;
   }
 
+  // returns remaining capacity
   addMilk(amount: number): number {
     const availableCapacity = this.capacity * (1 - CHOCOLATE_RATIO) - this.milk;
     if (amount <= availableCapacity) {
@@ -22,9 +23,11 @@ class Bucket {
       return 0;
     } else {
       this.milk += availableCapacity;
-      return availableCapacity - amount;
+      return amount - availableCapacity;
     }
   }
+
+  // returns remaining capacity
   addCacao(amount: number): number {
     const availableCapacity = this.capacity * CHOCOLATE_RATIO - this.cacao;
     if (amount <= availableCapacity) {
@@ -32,12 +35,12 @@ class Bucket {
       return 0;
     } else {
       this.cacao += availableCapacity;
-      return availableCapacity - amount;
+      return amount - availableCapacity;
     }
   }
 }
 
-export default class Machine {
+export class Machine {
   private buckets: Bucket[] = [];
   private onBucketReady: (v: Bucket) => void = () => {};
 
@@ -71,7 +74,8 @@ export default class Machine {
 
     this.swapActiveBuckets();
     const overflow = this.buckets[0].addMilk(amount);
-    if (overflow > 0) {
+
+    if (overflow > 0 && this.buckets.length > 1) {
       this.buckets[1].addMilk(overflow);
     }
 
@@ -84,7 +88,8 @@ export default class Machine {
 
     this.swapActiveBuckets();
     const overflow = this.buckets[0].addCacao(amount);
-    if (overflow > 0) {
+
+    if (overflow > 0 && this.buckets.length > 1) {
       this.buckets[1].addCacao(overflow);
     }
 
@@ -92,23 +97,39 @@ export default class Machine {
     this.checkBucketFills();
   }
 
-  async load(buckets: any, onBucketReady: (v: string) => void) {
+  async load(buckets: any, onBucketReady: (v: string) => void): Promise<boolean> {
+    if(!buckets.length){
+      return Promise.resolve(false);
+    }
+
     return new Promise((resolve: any, reject: any) => {
-      try {
-        buckets.forEach((v: any) => {
-          this.buckets.push(new Bucket(v.capacity, v.milk, v.cacao));
-        });
-      } catch (e) {
-        reject(e);
-      }
+      buckets.forEach((v: any) => {
+        if (typeof v.cacao !== "number") {
+          reject(new BucketConfigError('cacao'));
+        }
+        if (typeof v.milk !== "number") {
+          reject(new BucketConfigError('milk'));
+        }
+        if (typeof v.capacity !== "number") {
+          reject(new BucketConfigError('capacity'));
+        }
+        this.buckets.push(new Bucket(v.capacity, v.milk, v.cacao));
+      });
 
       this.onBucketReady = (bucket: Bucket) => {
         onBucketReady("Bucket has been filled, " + bucket.toString());
 
         if (!this.hasBuckets()) {
-          resolve();
+          resolve(true);
         }
       };
     });
+  }
+}
+
+export class BucketConfigError extends Error {
+  constructor(propertyName: string) {
+    super(`Invalid bucket configuration property type (${propertyName})`);
+    this.name = "BucketConfigError";
   }
 }

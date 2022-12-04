@@ -1,4 +1,4 @@
-import Machine from './Machine';
+import { Machine } from './Machine';
 
 const onBucketReady = console.log;
 
