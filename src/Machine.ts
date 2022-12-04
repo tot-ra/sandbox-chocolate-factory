@@ -7,16 +7,16 @@ class Bucket {
     private cacao: number
   ) {}
 
-  isFull(): boolean {
+  public isFull(): boolean {
     return this.milk + this.cacao === this.capacity;
   }
 
-  toString(): string {
+  public toString(): string {
     return `capacity: ${this.capacity} milk ${this.milk} cacao ${this.cacao}`;
   }
 
   // returns remaining capacity
-  addMilk(amount: number): number {
+  public addMilk(amount: number): number {
     const availableCapacity = this.capacity * (1 - CHOCOLATE_RATIO) - this.milk;
     if (amount <= availableCapacity) {
       this.milk += amount;
@@ -28,7 +28,7 @@ class Bucket {
   }
 
   // returns remaining capacity
-  addCacao(amount: number): number {
+  public addCacao(amount: number): number {
     const availableCapacity = this.capacity * CHOCOLATE_RATIO - this.cacao;
     if (amount <= availableCapacity) {
       this.cacao += amount;
@@ -58,7 +58,7 @@ export class Machine {
     }
   }
 
-  swapActiveBuckets() {
+  private swapActiveBuckets() {
     if (
       this.buckets.length > 1 &&
       this.buckets[1].capacity <= this.buckets[0].capacity
@@ -69,7 +69,7 @@ export class Machine {
     }
   }
 
-  addMilk(amount: number) {
+  public addMilk(amount: number) {
     if (!this.buckets.length) return;
 
     this.swapActiveBuckets();
@@ -83,7 +83,7 @@ export class Machine {
     this.checkBucketFills();
   }
 
-  addCacao(amount: number) {
+  public addCacao(amount: number) {
     if (!this.buckets.length) return;
 
     this.swapActiveBuckets();
