@@ -1,0 +1,26 @@
+{
+  "name": "chocolate-factory-sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "out/main.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tot-ra/chocolate-factory-sandbox.git"
+  },
+  "author": "Artjom Kurapov",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/tot-ra/chocolate-factory-sandbox/issues"
+  },
+  "homepage": "https://github.com/tot-ra/chocolate-factory-sandbox#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.3.5"
+  }
+}
