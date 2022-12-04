@@ -47,10 +47,11 @@ it('should return sequence provided in pdf requirements', async()=>{
       const job = setInterval(() => {
         machine.addMilk(Math.random() * 100);
         machine.addCacao(Math.random() * 100);
-      }, Math.random() * 10);
+      }, Math.random() * 100);
     
       let result: string = '';
       const onBucketReady = (line: string)=>{
+        console.log(line);
         result = result + line + "\n";
       };
 
