@@ -28,8 +28,13 @@ classDiagram
     }
 ```
 
-## Usage
+## Usage (docker)
+```bash
+docker compose up
 ```
+
+## Usage (native)
+```bash
 nvm use
 npm i
 npm run build
@@ -37,7 +42,7 @@ node out/main.js
 ```
 
 ## Unit testing
-```
+```bash
 npm run test:coverage
 ```
 

@@ -1,0 +1,7 @@
+version: '3'
+services:
+  chocolate-factory:
+    image: node:16-alpine
+    command: node /app/out/main.js
+    volumes:
+      - .:/app/
